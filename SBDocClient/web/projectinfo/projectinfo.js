@@ -96,8 +96,8 @@ var vue=new Vue({
         headerTab:function () {
             return "Header ("+store.getters.headerCount+")";
         },
-        bodyTab:function () {
-            return "Body ("+(store.state.bodyInfo.type==0?store.getters.bodyCount:"Raw")+")";
+        bodyTab: function () {
+            return "Body (" + (store.state.bodyInfo.type == 0 ? store.getters.bodyCount : "Json") + ")";
         },
         editInfo:function () {
             return this.interfaceEdit?(this.interfaceEdit.createdAt?((this.interfaceEdit.owner?this.interfaceEdit.owner.name:"")+"在"+this.interfaceEdit.createdAt+"创建，最近修改被"+(this.interfaceEdit.editor?this.interfaceEdit.editor.name:"")+"在"+this.interfaceEdit.updatedAt+"改动"):"接口尚未保存"):"";
@@ -131,25 +131,22 @@ var vue=new Vue({
                 })
             });
         },
-        importJSON:function () {
-            var _this=this;
-            $.inputMul(this,"请输入JSON",function (val) {
-                if(!val)
-                {
-                    $.tip("请输入JSON",0);
+        importJSON: function (params) {
+            var _this = this;
+            $.inputMul(this, "请输入JSON", function (val) {
+                if (!val) {
+                    $.tip("请输入JSON", 0);
                     return false
                 }
                 var obj;
-                try
-                {
-                    obj=JSON.parse(val)
+                try {
+                    obj = JSON.parse(val)
                 }
-                catch (err)
-                {
-                    $.tip("JSON不符合格式",0);
+                catch (err) {
+                    $.tip("JSON不符合格式", 0);
                     return false
                 }
-                store.commit("importResult",obj);
+                store.commit(params, obj);
                 return true;
             });
         },

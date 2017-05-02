@@ -242,6 +242,14 @@ module.exports=new Vuex.Store({
             }
             state.result=result;
         },
+        importBodyJson:function (state,obj) {
+            var result=[];
+            for(var key in obj)
+            {
+                helper.handleResultData(key,obj[key],result,null,1)
+            }
+            state.body=result;
+        },
         importQuery:function (state,val) {
             var str=decodeURI($.trim(val));
             var arr=[];
@@ -745,15 +753,8 @@ module.exports=new Vuex.Store({
             obj.queryparam=JSON.stringify(context.getters.querySave);
             if(context.state.interfaceEdit.method=="POST" || context.state.interfaceEdit.method=="PUT")
             {
-                if(context.state.bodyInfo.type==0)
-                {
-                    obj.bodyparam=JSON.stringify(context.getters.bodySave);
-                }
-                else
-                {
-                    obj.bodyparam="[]";
-                }
-                var bodyInfo=$.clone(context.state.bodyInfo);
+                obj.bodyparam = JSON.stringify(context.getters.bodySave);
+                var bodyInfo = $.clone(context.state.bodyInfo);
                 if(bodyInfo.type==1)
                 {
                     if(bodyInfo.rawType==0)

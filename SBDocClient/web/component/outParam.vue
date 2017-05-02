@@ -65,15 +65,19 @@
     var dragArr=null,dragItem=null;
     module.exports={
         name:"outparam",
-        props:["source","le","parent"],
+        props:["source","le","parent","inParams"],
         data:function () {
             return {
                 level:this.le?this.le:0,
             }
         },
         computed:{
-            arr:function () {
-                return this.source?this.source:this.$store.state.result
+            arr: function () {
+                if (this.inParams) {
+                    return this.$store.state.body
+                } else {
+                    return this.source ? this.source : this.$store.state.result
+                }
             }
         },
         methods:{

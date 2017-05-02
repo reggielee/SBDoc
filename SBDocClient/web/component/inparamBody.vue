@@ -2,16 +2,16 @@
     <el-row class="row">
         <el-row class="row" style="padding:0 0 0 20px;height: 50px;line-height: 50px">
             <el-radio class="radio" :label="0" v-model="info.type" :checked="info.type==0" id="bodyKey">Key-Value</el-radio>&nbsp;&nbsp;
-            <el-radio class="radio" :label="1" v-model="info.type" :checked="info.type==1" id="bodyRaw">Raw</el-radio>&nbsp;&nbsp;&nbsp;&nbsp;
-            <el-select v-model="rawType" v-if="info.type==1 && info.rawType==0">
-                <el-option value="" label="Text"></el-option>
-                <el-option value="text/plain" label="Text(text/plain)"></el-option>
-                <el-option value="application/json" label="JSON"></el-option>
-                <el-option value="text/html" label="HTML"></el-option>
-                <el-option value="application/xml" label="XML(application/xml)"></el-option>
-                <el-option value="text/xml" label="XML(text/xml)"></el-option>
-                <el-option value="application/javascript" label="JAVASCRIPT"></el-option>
-            </el-select>
+            <el-radio class="radio" :label="1" v-model="info.type" :checked="info.type==1" id="bodyRaw">JSON</el-radio>&nbsp;&nbsp;&nbsp;&nbsp;
+            <!--<el-select v-model="rawType" v-if="info.type==1 && info.rawType==0">-->
+                <!--<el-option value="" label="Text"></el-option>-->
+                <!--<el-option value="text/plain" label="Text(text/plain)"></el-option>-->
+                <!--<el-option value="application/json" label="JSON"></el-option>-->
+                <!--<el-option value="text/html" label="HTML"></el-option>-->
+                <!--<el-option value="application/xml" label="XML(application/xml)"></el-option>-->
+                <!--<el-option value="text/xml" label="XML(text/xml)"></el-option>-->
+                <!--<el-option value="application/javascript" label="JAVASCRIPT"></el-option>-->
+            <!--</el-select>-->
         </el-row>
         <table width="100%" v-if="info.type==0">
             <template v-for="(item,index) in arr">
@@ -45,32 +45,38 @@
                 </tr>
             </template>
         </table>
-        <el-row class="row" style="height: 50px;line-height: 50px" v-else>
-            <el-col class="col" :span="3">
-                Raw的类型：
-            </el-col>
-            <el-col class="col" :span="5">
-                <el-select v-model="info.rawType">
-                    <el-option :value="0" label="文本"></el-option>
-                    <el-option :value="1" label="文件"></el-option>
-                </el-select>
-            </el-col>
-            <el-col class="col" :span="12" style="text-align: center">
-                <el-input style="width: 90%;" placeholder="请填写备注" v-model="info.rawTextRemark" v-if="info.rawType==0"></el-input>
-                <el-input style="width: 90%;" placeholder="请填写备注" v-model="info.rawFileRemark" v-else></el-input>
-            </el-col>
-            <el-col class="col" :span="4" style="text-align: center">
-                <el-button type="text" size="small" @click="configRawValue"  v-if="info.rawType==0" style="font-size: 15px">{{info.rawText?"已填值":"未填值"}}</el-button>
-            </el-col>
-        </el-row>
+
+        <outparam v-if="info.type==1" inParams="true"></outparam>
+        <!--<el-row class="row" style="height: 50px;line-height: 50px" v-else>-->
+            <!--<el-col class="col" :span="3">-->
+                <!--Raw的类型：-->
+            <!--</el-col>-->
+            <!--<el-col class="col" :span="5">-->
+                <!--<el-select v-model="info.rawType">-->
+                    <!--<el-option :value="0" label="文本"></el-option>-->
+                    <!--<el-option :value="1" label="文件"></el-option>-->
+                <!--</el-select>-->
+            <!--</el-col>-->
+            <!--<el-col class="col" :span="12" style="text-align: center">-->
+                <!--<el-input style="width: 90%;" placeholder="请填写备注" v-model="info.rawTextRemark" v-if="info.rawType==0"></el-input>-->
+                <!--<el-input style="width: 90%;" placeholder="请填写备注" v-model="info.rawFileRemark" v-else></el-input>-->
+            <!--</el-col>-->
+            <!--<el-col class="col" :span="4" style="text-align: center">-->
+                <!--<el-button type="text" size="small" @click="configRawValue"  v-if="info.rawType==0" style="font-size: 15px">{{info.rawText?"已填值":"未填值"}}</el-button>-->
+            <!--</el-col>-->
+        <!--</el-row>-->
     </el-row>
 </template>
 <script>
+    var outParam = require("../component/outParam.vue");
     module.exports={
         data:function () {
             return {
 
             }
+        },
+        components:{
+            "outparam":outParam,
         },
         computed:{
             arr:function () {
@@ -158,7 +164,8 @@
                 child.$on("save",function (value) {
                     _this.info.rawText=value;
                 });
-            }
+            },
+
         }
     }
 </script>

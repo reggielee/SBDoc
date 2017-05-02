@@ -143,6 +143,9 @@
                         <el-tab-pane :label="bodyTab" v-if="interfaceEdit.method=='POST' || interfaceEdit.method=='PUT'">
                             <inparambody></inparambody>
                             <el-button size="small" type="primary" style="margin-top: 10px;margin-left: 10px" @click="importBody" v-if="bodyInfo.type==0">导入Body字符串</el-button>
+                            <el-button v-if="bodyInfo.type==1" type="primary" size="small" style="margin-top: 10px;margin-left: 20px" @click="importJSON('importBodyJson')">
+                                导入JSON
+                            </el-button>
                         </el-tab-pane>
                         <el-tab-pane label="Inject">
                             <inparaminject></inparaminject>
@@ -167,7 +170,7 @@
                             </el-row>
                         </el-tab-pane>
                     </el-tabs>
-                    <el-button type="primary" size="small" style="margin-top: 10px;margin-left: 20px" @click="importJSON" v-if="outInfo.type==0">
+                    <el-button type="primary" size="small" style="margin-top: 10px;margin-left: 20px" @click="importJSON('importResult')" v-if="outInfo.type==0">
                         导入JSON
                     </el-button>
                     <span style="right: 50px;font-weight: bold;top: 25px;position: absolute"><a href="mockrule.html" style="color: #50a3ff;" target="_blank">mock规则</a></span>

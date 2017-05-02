@@ -52,8 +52,8 @@
     </el-row>
 </template>
 <script>
-    var con=require("../../../config.json");
-    var proxyImg=require("../director/proxyImg")
+//    var con = require("../../../config.json");
+    var proxyImg = require("../director/proxyImg");
     module.exports={
         props:["transparent"],
         data:function () {
@@ -94,7 +94,7 @@
                             $.stopHud();
                             var obj=JSON.parse(xml.responseText);
                             var verArr=obj[0].name.split(".");
-                            var verLocalArr=con.version.split(".");
+                            var verLocalArr='1';
                             var bNew=false;
                             for(var i=0;i<3;i++)
                             {
