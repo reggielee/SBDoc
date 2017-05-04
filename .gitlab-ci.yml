@@ -1,11 +1,5 @@
 stages:
-  - build
   - deploy
-
-build:
-  stage: build
-  script:
-    - docker build -t zeroso_api:test .
 
 deploy_dev:
   stage: deploy
