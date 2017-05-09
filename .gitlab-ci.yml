@@ -1,0 +1,12 @@
+stages:
+  - deploy
+
+deploy_dev:
+  stage: deploy
+  script:
+    - docker build -t zeroso_api:dev .
+    - /usr/local/bin/docker-admin.sh api dev restart
+  tags:
+    - gitlab-runner.dev.0so.cn
+  only:
+    - master@0so/zeroso_api
