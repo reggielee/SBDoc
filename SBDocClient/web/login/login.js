@@ -27,7 +27,7 @@ var vue=new Vue({
                 if(data.code==200)
                 {
                     _this.$notify({
-                        title: '登陆成功',
+                        title: '登录成功',
                         type: 'success'
                     });
                     session.clear()
@@ -53,9 +53,7 @@ $.ready(function () {
         if(event.keyCode==13)
         {
             var event1 = document.createEvent('HTMLEvents');
-            20
             event1.initEvent("click", true, true);
-            21
             event1.eventType = 'message';
             document.getElementById("login").dispatchEvent(event1);
         }

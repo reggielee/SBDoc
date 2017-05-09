@@ -11,6 +11,7 @@ var project=require("../../model/projectModel")
 var group=require("../../model/groupModel")
 var interface=require("../../model/interfaceModel")
 var fs=require("fs");
+var uuid=require("uuid/v1");
 let refreshInterface=async (function (id) {
     let query={
         project:id
@@ -22,7 +23,7 @@ let refreshInterface=async (function (id) {
     {
         let arrInterface=await (interface.findAsync({
             group:obj._id
-        },"_id name method finish",{
+        },"_id name method finish url",{
             sort:"name"
         }));
         obj._doc.data=arrInterface;
@@ -34,8 +35,10 @@ var validateUser =async (function validateUser(req) {
     let obj,pro;
     if(req.clientParam.id)
     {
-        let obj=await (interface.findOneAsync({
+        let obj=await (interface.findOneAsync(req.clientParam.id.length==24?{
             _id:req.clientParam.id
+        }:{
+            id:req.clientParam.id
         }));
         if(!obj)
         {
@@ -121,9 +124,12 @@ function create(req,res) {
         {
             if(key!="id" && req.clientParam[key]!==undefined)
             {
-                if(key=="queryParam" || key=="header" || key=="bodyParam" || key=="outParam" || key=="restParam" || key=="bodyInfo" || key=="outInfo")
+                if(key=="queryParam" || key=="header" || key=="bodyParam" || key=="outParam" || key=="restParam" || key=="bodyInfo" || key=="outInfo" || key=="before" || key=="after")
                 {
-                    update[key]=JSON.parse(req.clientParam[key]);
+                    if(req.clientParam[key]!=="")
+                    {
+                        update[key]=JSON.parse(req.clientParam[key]);
+                    }
                 }
                 else
                 {
@@ -170,6 +176,7 @@ function create(req,res) {
             }
             update.owner=req.userInfo._id;
             update.editor=req.userInfo._id;
+            update.id=uuid();
             let obj=await (interface.createAsync(update))
             util.ok(res,obj,"新建成功");
         }
@@ -255,7 +262,7 @@ function info(req,res) {
                 select:"name"
             }))
         }
-        if(obj.group._id.toString()!=req.clientParam.group)
+        if(req.clientParam.group && obj.group._id.toString()!=req.clientParam.group && req.clientParam.group.length==24)
         {
             obj._doc.change=1;
         }
@@ -292,12 +299,84 @@ function destroy(req,res) {
     }
 }
 
+function exportJSON(req,res) {
+    try
+    {
+        await (validateUser(req));
+        let obj={
+            flag:"SBDoc",
+        };
+        for(let key in req.interface._doc)
+        {
+            if(req.interface._doc.hasOwnProperty(key) && key!="__v" && key!="_id" && key!="_id" && key!="project" && key!="group" && key!="owner" && key!="editor")
+            {
+                obj[key]=req.interface._doc[key];
+            }
+        }
+        let content=JSON.stringify(obj);
+        res.writeHead(200,{
+            'Content-Type': 'application/octet-stream',
+            'Content-Disposition': 'attachment; filename*=UTF-8\'\''+encodeURIComponent(req.interface.name)+".json",
+            "Transfer-Encoding": "chunked",
+            "Expires":0,
+            "Cache-Control":"must-revalidate, post-check=0, pre-check=0",
+            "Content-Transfer-Encoding":"binary",
+            "Pragma":"public",
+        });
+        res.end(content);
+    }
+    catch (err)
+    {
+        util.catch(res,err);
+    }
+}
+
+function importJSON(req,res) {
+    try
+    {
+        let obj;
+        try
+        {
+            obj=JSON.parse(req.clientParam.json);
+        }
+        catch (err)
+        {
+            util.throw(e.systemReason,"json解析错误");
+            return;
+        }
+        if(obj.flag!="SBDoc")
+        {
+            util.throw(e.systemReason,"不是SBDoc的导出格式");
+            return;
+        }
+        let objGroup=await (group.findOneAsync({
+            _id:req.clientParam.id
+        }))
+        if(!objGroup)
+        {
+            util.throw(e.groupNotFound,"分组不存在");
+            return;
+        }
+        obj.project=objGroup.project;
+        obj.group=objGroup._id;
+        obj.owner=req.userInfo._id;
+        obj.editor=req.userInfo._id;
+        obj=await (interface.createAsync(obj));
+        util.ok(res,obj,"导入成功");
+    }
+    catch (err)
+    {
+        util.catch(res,err);
+    }
+}
+
 exports.create=async (create);
 exports.remove=async (remove);
 exports.move=async (move);
 exports.info=async (info);
 exports.destroy=async (destroy);
-
+exports.exportJSON=async (exportJSON);
+exports.importJSON=async (importJSON);
 
 
 

@@ -12,7 +12,6 @@ module.exports = {
         person:"./web/person/person",
         project:"./web/project/project",
         projectinfo:"./web/projectinfo/projectinfo",
-        projectset:"./web/projectset/projectset",
         reset:"./web/reset/reset",
         about:"./web/about/about",
         help:"./web/help/help",
@@ -47,23 +46,28 @@ module.exports = {
         new webpack.optimize.CommonsChunkPlugin({ name: 'vendor', filename: 'vendor.bundle.js' }),
     ],
     module: {
-        loaders: [{
-            test: /\.css$/,
-            loaders: ['style', 'css']
-        },
-        {
-            test: /\.vue$/,
-            //loaders: ["happypack/loader"]
-            loader:"vue-loader"
-        },
+        loaders: [
             {
-
+                test: /\.css$/,
+                loaders: ['style', 'css']
+            },
+            {
+                test: /\.vue$/,
+                //loaders: ["happypack/loader"]
+                loader:"vue-loader"
+            },
+            {
+                test: /helper\.js/,
+                //loaders: ["happypack/loader"]
+                loader:"babel-loader"
+            },
+            {
                 test: /\.html$/,
                 loader: "html?attrs=img:src img:data-src"
             }
          ]
     },
-    // devtool: 'cheap-module-eval-source-map',
+    //devtool: 'module-source-map',
     devtool: 'source-map',
     resolve: {
         alias: {

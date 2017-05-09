@@ -1,8 +1,8 @@
 {
-  "db": "mongodb://localhost:27017/SBDoc",
-  "filePath": "/home/reggie/Shared/SBDoc",
-  "imgPath": "/home/reggie/Shared/SBDoc/img",
-  "tempPath": "/home/reggie/Shared/SBDoc/temp",
-  "port": 10000,
-  "version": "1.1.9"
+  "db":"mongodb://localhost:27017/SBDoc",
+  "filePath":"/Users/Shared/SBDoc",
+  "imgPath":"/Users/Shared/SBDoc/img",
+  "tempPath":"/Users/Shared/SBDoc/temp",
+  "port":10000,
+  "version":"2.0.0"
 }

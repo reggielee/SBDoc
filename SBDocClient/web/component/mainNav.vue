@@ -44,7 +44,7 @@
             </el-dropdown>
         </el-col>
         <el-col class="col" :span="2" style="text-align: center;line-height: 60px" v-if="!isLogin">
-            <el-button type="primary" onclick="location='/html/web/login/login.html'">登陆</el-button>
+            <el-button type="primary" onclick="location='/html/web/login/login.html'">登录</el-button>
         </el-col>
         <el-col class="col" :span="2" style="text-align: center;line-height: 60px" v-if="!isLogin">
             <el-button type="primary"  onclick="location='/html/web/register/register.html'">注册</el-button>
@@ -101,6 +101,10 @@
                                 if(verArr[i]>verLocalArr[i])
                                 {
                                     bNew=true;
+                                    break;
+                                }
+                                else if(verArr[i]<verLocalArr[i])
+                                {
                                     break;
                                 }
                             }

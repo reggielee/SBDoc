@@ -52,14 +52,9 @@ var model=new mongoose.Schema({
         type:Number,
         default:0
     },
-    before:{
-        type:String,
-        default:""
-    },
-    after:{
-        type:String,
-        default:""
-    }
+    before:Object,
+    after:Object,
+    id:String
 },{
     timestamps:true
 });

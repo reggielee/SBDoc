@@ -19,5 +19,9 @@
   "duplicateUser":17,
   "duplicateName":18,
   "interfaceChanged":19,
-  "questionIsEmpty":20
+  "questionIsEmpty":20,
+  "statusNotFound":21,
+  "testNotFound":22,
+  "testModuleNotFound":23,
+  "testGroupNotFound":24
 }
