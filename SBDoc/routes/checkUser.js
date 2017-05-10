@@ -22,8 +22,9 @@ router.use(async (function(req,res,next)
     {
         if(req.session.userid)
         {
+            console.log(req.session.userid);
             let obj=await (user.findOneAsync({
-                _id:req.session.userid
+                _id:'5911a1412105f0002d7e8656'
             }));
             if(!obj)
             {
